@@ -1,4 +1,6 @@
+[![Greenkeeper badge](https://badges.greenkeeper.io/snorpey/png-es6.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/snorpey/png-es6.svg?branch=master)](https://travis-ci.org/snorpey/png-es6)
+
 
 png-es6
 ===
