@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<head><meta charset="utf-8" /></head>
 <body>
 <select>
 	<optgroup label="Static PNGs">
@@ -17,33 +18,28 @@
 </select><br><br>
 <canvas></canvas>
 
-<script src="https://unpkg.com/systemjs"></script>
-<!-- <script src="../dist/png-with-worker.es6.js"></script> -->
-<script>
-	SystemJS.config( {
-			map: {
-				'plugin-traceur': 'https://unpkg.com/systemjs-plugin-traceur',
-				'traceur': 'https://unpkg.com/traceur/bin/traceur.js',
-				'traceur-runtime': 'https://unpkg.com/traceur/bin/traceur-runtime.js'
-			},
-			meta: {
-				'traceur': {
-					format: 'global',
-					exports: 'traceur'
-				},
-				'traceur-runtime': {
-					format: 'global',
-					exports: '$traceurRuntime'
-				}
-			},
-			transpiler: 'plugin-traceur',
-			transpilerRuntime: false,
-			baseURL: '.'
-		} );
+<script type="module" src="../dist/png-with-worker.es6.js"></script>
+<script type="module">
+import { fromURL, renderToCanvas } from '../dist/png-with-worker.es6.js';
+const canvas = document.getElementsByTagName('canvas')[0];
+const select = document.getElementsByTagName('select')[0];
 
-		// check out this file to see how to consume glitch-canvas as an es6 module
-		// (requires browsers that support ES6, even in web workers)
-		SystemJS.import( './png-browser-module.js' );
+fromURL( 'images/djay.png' )
+	.then( pngData => {
+		console.log( 'pngData:', pngData );
+		renderToCanvas( pngData, canvas, true );
+	} );
+	
+	
+select.onchange = function () {
+	canvas.width = canvas.height = 0;
+	
+	fromURL('images/' + select.options[select.selectedIndex].value)
+		.then( pngData => {
+			console.log( 'pngData:', pngData );
+			renderToCanvas( pngData, canvas, true );
+		} );
+};
 </script>
 </body>
 </html>
