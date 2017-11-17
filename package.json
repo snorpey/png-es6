@@ -1,8 +1,14 @@
 {
   "name": "png-es6",
   "description": "A PNG decoder in JavaScript ES6 that works in browsers and web workers",
-  "version": "1.0.0",
-  "keywords": [ "png", "image", "es6", "browser", "worker" ],
+  "version": "0.2.0",
+  "keywords": [
+    "png",
+    "image",
+    "es6",
+    "browser",
+    "worker"
+  ],
   "author": {
     "name": "Georg Fischer",
     "email": "hi@snorpey.com",
@@ -17,12 +23,20 @@
     "build": "npm run build-vanilla && npm run build-browsers",
     "build-vanilla": "node build.js && node build.js -m && node build.js -e && node build.js -em && node build.js -eu && node build.js -emu",
     "build-browsers": "node build.js -b && node build.js -bm && node build.js -be && node build.js -bem && node build.js -beu && node build.js -bemu",
-    "__prepublish": "npm run build && npm run test",
-    "__test": "test-vanilla"
+    "prepublish": "npm run build && npm run test",
+    "test": "npm run test-browser && npm run test-browser-min",
+    "test-browser": "karma start --single-run --browsers ChromeHeadless test/browser.karma.conf.js --lib=png-with-worker.js",
+    "test-browser-min": "karma start --single-run --browsers ChromeHeadless test/browser.karma.conf.js --lib=png-with-worker.min.js"
   },
   "devDependencies": {
     "buble": "^0.17.3",
+    "chai": "^4.1.2",
     "extract-comments": "^0.10.1",
+    "karma": "^1.7.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "mocha": "^4.0.1",
     "rollup": "^0.51.7",
     "rollup-plugin-buble": "^0.17.0",
     "rollup-plugin-cleanup": "^2.0.0",

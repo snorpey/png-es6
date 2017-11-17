@@ -23,7 +23,7 @@
 	
 	png.fromURL( 'images/djay.png' )
 		.then( function ( pngData ) {
-			console.log( 'png', pngData );
+			console.log( 'png', pngData, typeof pngData.data );
 			png.renderToCanvas( pngData, canvas, true );
 		} );
 		

@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "7"
+dist: trusty # needs Ubuntu Trusty
+sudo: false  # no need for virtualization.
+addons:
+  chrome: stable # have Travis install chrome stable.
+cache:
+  npm: true
+  directories:
+    - node_modules
+install:
+  - npm install
+script:
+  - npm test

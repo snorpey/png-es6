@@ -1,7 +1,7 @@
 /* @license
 https://github.com/lydell/resolve-url/blob/master/resolve-url.js
 Copyright 2014 Simon Lydell
-X11 ("MIT) Licensed. (See LICENSE.) */
+X11 ("MIT") Licensed. (See LICENSE.) */
 
 /* @license
 
