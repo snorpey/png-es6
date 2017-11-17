@@ -9,14 +9,14 @@ installation
 * [png.es6.min.js](https://raw.githubusercontent.com/snorpey/png-es6/master/dist/png.es6.min.js) 15kb, (5kb gzipped)
 * [png-es6-master.zip](https://github.com/snorpey/png-es6/archive/master.zip)
 
+`npm install png-es6`
+
 see the [dist](dist) folder for more versions.
 
 what is it?
 ---
 
-a png decoder in javascript for use in the browser and in web workers.
-
-the main focus for this module are a small file size and web worker support.
+a png decoder in javascript for the browser. this module is mainly focussed on a small file size and web worker support.
 
 for node, you can use [png-js](https://www.npmjs.com/package/png-js) instead. there exist [plenty](https://www.npmjs.com/search?q=png+decode) of other, more feature rich png decoders.
 
