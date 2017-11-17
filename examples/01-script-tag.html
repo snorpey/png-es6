@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+<select>
+	<optgroup label="Static PNGs">
+		<option>djay.png</option>
+		<option>djay-indexed.png</option>
+		<option>laptop.png</option>
+		<option>trees.png</option>
+	</optgroup>
+	<optgroup label="Animated PNGs">
+		<option>chompy.png</option>
+		<option>spinfox.png</option>
+		<option>ball.png</option>
+		<option>loading.png</option>
+	</optgroup>
+</select><br><br>
+<canvas></canvas>
+
+<script src="../dist/png-with-worker.js"></script>
+<script>
+	var canvas = document.getElementsByTagName('canvas')[0];
+	
+	png.fromURL( 'images/djay.png' )
+		.then( function ( pngData ) {
+			console.log( 'png', pngData );
+			png.renderToCanvas( pngData, canvas, true );
+		} );
+		
+		var select = document.getElementsByTagName('select')[0];
+		
+		select.onchange = function () {
+			canvas.width = canvas.height = 0;
+			
+			png.fromURL('images/' + select.options[select.selectedIndex].value)
+				.then( function ( pngData ) {
+					console.log( 'png', pngData );
+					png.renderToCanvas( pngData, canvas, true );
+				} );
+		}
+</script>
+</body>
+</html>

@@ -1,23 +1,42 @@
 {
-  "name": "png-js",
-  "description": "A PNG decoder in CoffeeScript",
-  "version": "0.1.1",
+  "name": "png-es6",
+  "description": "A PNG decoder in JavaScript ES6 that works in browsers and web workers",
+  "version": "1.0.0",
+  "keywords": [ "png", "image", "es6", "browser", "worker" ],
   "author": {
-      "name": "Devon Govett",
-      "email": "devongovett@gmail.com",
-      "url": "http://badassjs.com/"
+    "name": "Georg Fischer",
+    "email": "hi@snorpey.com",
+    "url": "http://snorpey.com/"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/devongovett/png.js.git"
+    "type": "git",
+    "url": "https://github.com/snorpey/png-es6.git"
   },
-  "bugs": "http://github.com/devongovett/png.js/issues",
-  "devDependencies": {
-      "coffee-script": ">=1.0.1"
-  },
+  "bugs": "https://github.com/snorpey/png-es6/issues",
   "scripts": {
-      "prepublish": "coffee -c png-node.coffee"
+    "build": "npm run build-vanilla && npm run build-browsers",
+    "build-vanilla": "node build.js && node build.js -m && node build.js -e && node build.js -em && node build.js -eu && node build.js -emu",
+    "build-browsers": "node build.js -b && node build.js -bm && node build.js -be && node build.js -bem && node build.js -beu && node build.js -bemu",
+    "__prepublish": "npm run build && npm run test",
+    "__test": "test-vanilla"
   },
-  "main": "png-node.js",
-  "engine": [ "node >= v0.6.0" ]
+  "devDependencies": {
+    "buble": "^0.16.0",
+    "extract-comments": "^0.10.1",
+    "rollup": "^0.50.0",
+    "rollup-plugin-buble": "^0.16.0",
+    "rollup-plugin-cleanup": "^2.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "uglify-es": "^3.1.6",
+    "uglify-js": "^3.1.6"
+  },
+  "main": "dist/png.js",
+  "browser": "dist/png-with-worker.js",
+  "module": "dist/png-with-worker.es6.js",
+  "jspm": {
+    "main": "dist/png.es6.js"
+  },
+  "engine": [
+    "node >= v0.6.0"
+  ]
 }

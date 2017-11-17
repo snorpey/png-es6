@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+var worker = new Worker( 'png-worker.js' );
+
+worker.addEventListener( 'message', function ( event ) {
+	if ( event.data ) {
+		console.log( 'Received PNG data in index', event.data );
+		
+		// draw png data to canvas
+		var pngData = event.data;
+		var canvasEl = document.createElement( 'canvas' );
+		var ctx = canvasEl.getContext( '2d' );
+
+		canvasEl.width = pngData.width;
+		canvasEl.height = pngData.height;
+
+		var imageData = ctx.createImageData( pngData.width, pngData.height );
+		var colorCount = pngData.colors;
+		
+
+		for ( var i = 0, len = pngData.data.length; i < len; i += colorCount ) {
+			imageData.data[i] = pngData.data[i];
+			imageData.data[i + 1] = pngData.data[i + 1];
+			imageData.data[i + 2] = pngData.data[i + 2];
+
+			if ( colorCount === 4 ) {
+				imageData.data[i + 3] = pngData.data[i + 3];
+			} else {
+				imageData.data[i + 3] = 255;
+			}
+		}
+
+		ctx.putImageData( imageData, 0, 0 );
+
+		document.body.appendChild( canvasEl );
+	}
+} );
+
+worker.postMessage( 'images/djay.png' );
+
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<body>
+<select>
+	<optgroup label="Static PNGs">
+		<option>djay.png</option>
+		<option>djay-indexed.png</option>
+		<option>laptop.png</option>
+		<option>trees.png</option>
+	</optgroup>
+	<optgroup label="Animated PNGs">
+		<option>chompy.png</option>
+		<option>spinfox.png</option>
+		<option>ball.png</option>
+		<option>loading.png</option>
+	</optgroup>
+</select><br><br>
+<canvas></canvas>
+
+<script src="https://unpkg.com/systemjs"></script>
+<!-- <script src="../dist/png-with-worker.es6.js"></script> -->
+<script>
+	SystemJS.config( {
+			map: {
+				'plugin-traceur': 'https://unpkg.com/systemjs-plugin-traceur',
+				'traceur': 'https://unpkg.com/traceur/bin/traceur.js',
+				'traceur-runtime': 'https://unpkg.com/traceur/bin/traceur-runtime.js'
+			},
+			meta: {
+				'traceur': {
+					format: 'global',
+					exports: 'traceur'
+				},
+				'traceur-runtime': {
+					format: 'global',
+					exports: '$traceurRuntime'
+				}
+			},
+			transpiler: 'plugin-traceur',
+			transpilerRuntime: false,
+			baseURL: '.'
+		} );
+
+		// check out this file to see how to consume glitch-canvas as an es6 module
+		// (requires browsers that support ES6, even in web workers)
+		SystemJS.import( './png-browser-module.js' );
+</script>
+</body>
+</html>
