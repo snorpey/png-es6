@@ -1,7 +1,8 @@
-png-es6
-===
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/snorpey/png-es6.svg)](https://greenkeeper.io/)
+
+png-es6
+===
 
 installation
 ---
