@@ -9,8 +9,6 @@ installation
 * [png.es6.min.js](https://raw.githubusercontent.com/snorpey/png-es6/master/dist/png.es6.min.js) 15kb, (5kb gzipped)
 * [png-es6-master.zip](https://github.com/snorpey/png-es6/archive/master.zip)
 
-`npm install png-es6`
-
 see the [dist](dist) folder for more versions.
 
 what is it?
