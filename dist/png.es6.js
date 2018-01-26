@@ -694,6 +694,7 @@ class PNG {
 		const palette = this.palette;
 		const transparency = this.transparency.indexed || [ ];
 		const result = new Uint8Array( ( transparency.length || 0 ) + palette.length );
+		const length = palette.length;
 		let pos = 0;
 		let c = 0;
 		let i, _i, _ref, _ref1;

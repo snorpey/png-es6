@@ -706,6 +706,7 @@ PNG.prototype.decodePalette = function decodePalette () {
 	var palette = this.palette;
 	var transparency = this.transparency.indexed || [ ];
 	var result = new Uint8Array( ( transparency.length || 0 ) + palette.length );
+	var length = palette.length;
 	var pos = 0;
 	var c = 0;
 	var i, _i, _ref, _ref1;
