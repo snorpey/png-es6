@@ -1,7 +1,7 @@
 {
   "name": "png-es6",
   "description": "A PNG decoder in JavaScript ES6 that works in browsers and web workers",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "keywords": [
     "png",
     "image",
