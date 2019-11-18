@@ -83,9 +83,10 @@ function processES6File ( filePath, format = 'es', moduleName ) {
 				bundleOpts.name = moduleName;
 			}
 
-			return bundle.generate( bundleOpts )
+			return bundle
+				.generate( bundleOpts )
 				.then( bundleData => {
-					return bundleData.code;
+					return bundleData.output[0].code;
 				} );
 		}, err => {
 			console.log( err );
