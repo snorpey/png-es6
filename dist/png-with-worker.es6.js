@@ -270,4 +270,4 @@ function renderAnimationFrame ( pngData, ctx, frameIndex ) {
 	return ctx.drawImage( frame.image, frame.xOffset, frame.yOffset );
 }
 
-export { fromURL, fromImageData, toImageData, renderToCanvas, renderToContext, animateOnContext, renderAnimationFrame };
+export { animateOnContext, fromImageData, fromURL, renderAnimationFrame, renderToCanvas, renderToContext, toImageData };

@@ -61,7 +61,7 @@ DEALINGS IN THE SOFTWARE. */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.png = {})));
+	(global = global || self, factory(global.png = {}));
 }(this, (function (exports) { 'use strict';
 
 	/**/
@@ -276,13 +276,13 @@ DEALINGS IN THE SOFTWARE. */
 		return ctx.drawImage( frame.image, frame.xOffset, frame.yOffset );
 	}
 
-	exports.fromURL = fromURL;
+	exports.animateOnContext = animateOnContext;
 	exports.fromImageData = fromImageData;
-	exports.toImageData = toImageData;
+	exports.fromURL = fromURL;
+	exports.renderAnimationFrame = renderAnimationFrame;
 	exports.renderToCanvas = renderToCanvas;
 	exports.renderToContext = renderToContext;
-	exports.animateOnContext = animateOnContext;
-	exports.renderAnimationFrame = renderAnimationFrame;
+	exports.toImageData = toImageData;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

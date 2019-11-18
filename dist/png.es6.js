@@ -732,4 +732,4 @@ function fromImageData ( imageData ) {
 	} );
 }
 
-export { fromURL, fromImageData, toImageData };
+export { fromImageData, fromURL, toImageData };
