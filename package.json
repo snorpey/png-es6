@@ -42,7 +42,7 @@
     "rollup-plugin-cleanup": "^3.0.0",
     "rollup-plugin-uglify": "^6.0.3",
     "uglify-es": "^3.1.6",
-    "uglify-js": "^3.1.6"
+    "uglify-js": "^3.7.6"
   },
   "main": "dist/png.js",
   "browser": "dist/png-with-worker.js",
