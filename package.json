@@ -32,7 +32,7 @@
     "buble": "^0.20.0",
     "chai": "^4.1.2",
     "extract-comments": "^1.0.0",
-    "karma": "^4.4.1",
+    "karma": "^5.0.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-mocha": "^2.0.0",
