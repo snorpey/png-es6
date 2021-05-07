@@ -56,7 +56,7 @@ DEALINGS IN THE SOFTWARE. */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(global = global || self, factory(global.png = {}));
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.png = {}));
 }(this, (function (exports) { 'use strict';
 
 	function loadPNG ( url ) {
@@ -105,14 +105,13 @@ DEALINGS IN THE SOFTWARE. */
 		return this.buffer = buffer2;
 	};
 	DecodeStream.prototype.getBytes = function getBytes ( length ) {
-			var this$1 = this;
 		var pos = this.pos;
 		var end;
 		if ( length ) {
 			this.ensureBuffer( pos + length );
 			end = pos + length;
 			while ( ! this.eof && this.bufferLength < end ) {
-				this$1.readBlock();
+				this.readBlock();
 			}
 			var bufEnd = this.bufferLength;
 			if ( end > bufEnd ) {
@@ -120,7 +119,7 @@ DEALINGS IN THE SOFTWARE. */
 			}
 		} else {
 			while ( ! this.eof ) {
-				this$1.readBlock();
+				this.readBlock();
 			}
 			end = this.bufferLength;
 		}
@@ -323,7 +322,6 @@ DEALINGS IN THE SOFTWARE. */
 			return [ codes, maxLen ];
 		};
 		FlateStream.prototype.readBlock = function readBlock () {
-			var this$1 = this;
 			var i = 0;
 			function repeat ( stream, array, len, offset, what ) {
 				var repeat = stream.getBits( len ) + offset;
@@ -367,7 +365,7 @@ DEALINGS IN THE SOFTWARE. */
 				this.bufferLength = end;
 				for ( var n = bufferLength; n < end; ++n ) {
 					if (typeof ( b = bytes[bytesPos++] ) == 'undefined' ) {
-						this$1.eof = true;
+						this.eof = true;
 						break;
 					}
 					buffer$1[n] = b;
@@ -387,7 +385,7 @@ DEALINGS IN THE SOFTWARE. */
 				var codeLenCodeLengths = Array( codeLenCodeMap.length );
 				i = 0;
 				while ( i < numCodeLenCodes ){
-					codeLenCodeLengths[codeLenCodeMap[i++]] = this$1.getBits( 3 );
+					codeLenCodeLengths[codeLenCodeMap[i++]] = this.getBits( 3 );
 				}
 				var codeLenCodeTab = this.generateHuffmanTable( codeLenCodeLengths );
 				var len = 0;
@@ -395,13 +393,13 @@ DEALINGS IN THE SOFTWARE. */
 				var codeLengths = new Array( codes );
 				i = 0;
 				while ( i < codes ) {
-					var code = this$1.getCode( codeLenCodeTab );
+					var code = this.getCode( codeLenCodeTab );
 					if ( code == 16 ) {
-						repeat( this$1, codeLengths, 2, 3, len );
+						repeat( this, codeLengths, 2, 3, len );
 					} else if ( code == 17 ) {
-						repeat( this$1, codeLengths, 3, 3, len = 0 );
+						repeat( this, codeLengths, 3, 3, len = 0 );
 					} else if ( code == 18 ) {
-						repeat( this$1, codeLengths, 7, 11, len = 0 );
+						repeat( this, codeLengths, 7, 11, len = 0 );
 					} else {
 						codeLengths[i++] = len = code;
 					}
@@ -415,35 +413,35 @@ DEALINGS IN THE SOFTWARE. */
 			var limit = buffer ? buffer.length : 0;
 			var pos = this.bufferLength;
 			while ( true ) {
-				var code1 = this$1.getCode( litCodeTable );
+				var code1 = this.getCode( litCodeTable );
 				if ( code1 < 256 ) {
 					if ( pos + 1 >= limit ) {
-						buffer = this$1.ensureBuffer( pos + 1 );
+						buffer = this.ensureBuffer( pos + 1 );
 						limit = buffer.length;
 					}
 					buffer[pos++] = code1;
 					continue;
 				}
 				if ( code1 == 256 ) {
-					this$1.bufferLength = pos;
+					this.bufferLength = pos;
 					return;
 				}
 				code1 -= 257;
 				code1 = lengthDecode[code1];
 				var code2 = code1 >> 16;
 				if ( code2 > 0 ) {
-					code2 = this$1.getBits( code2 );
+					code2 = this.getBits( code2 );
 				}
 				var len$1 = ( code1 & 0xffff ) + code2;
-				code1 = this$1.getCode( distCodeTable );
+				code1 = this.getCode( distCodeTable );
 				code1 = distDecode[code1];
 				code2 = code1 >> 16;
 				if ( code2 > 0 ) {
-					code2 = this$1.getBits( code2 );
+					code2 = this.getBits( code2 );
 				}
 				var dist = ( code1 & 0xffff ) + code2;
 				if ( pos + len$1 >= limit ) {
-					buffer = this$1.ensureBuffer( pos + len$1 );
+					buffer = this.ensureBuffer( pos + len$1 );
 					limit = buffer.length;
 				}
 				for ( var k = 0; k < len$1; ++k, ++pos ) {
@@ -456,7 +454,6 @@ DEALINGS IN THE SOFTWARE. */
 
 	/**/
 	var PNG = function PNG ( data ) {
-		var this$1 = this;
 		this.data = data;
 		this.pos = 8;
 		this.palette = [ ];
@@ -466,97 +463,96 @@ DEALINGS IN THE SOFTWARE. */
 		this.text = { };
 		var frame = null;
 		while ( true ) {
-			var chunkSize = this$1.readUInt32();
+			var chunkSize = this.readUInt32();
 			var section = ( ( function () {
-				var this$1 = this;
-				var i, _i;
+				var _i;
 				var _results = [ ];
-				for ( i = _i = 0; _i < 4; i = ++_i ) {
-					_results.push( String.fromCharCode( this$1.data[this$1.pos++] ) );
+				for ( _i = 0; _i < 4; ++_i ) {
+					_results.push( String.fromCharCode( this.data[this.pos++] ) );
 				}
 				return _results;
-			} ).call( this$1 ) ).join( '' );
+			} ).call( this ) ).join( '' );
 			switch ( section ) {
 				case 'IHDR':
-					this$1.width = this$1.readUInt32();
-					this$1.height = this$1.readUInt32();
-					this$1.bits = this$1.data[this$1.pos++];
-					this$1.colorType = this$1.data[this$1.pos++];
-					this$1.compressionMethod = this$1.data[this$1.pos++];
-					this$1.filterMethod = this$1.data[this$1.pos++];
-					this$1.interlaceMethod = this$1.data[this$1.pos++];
+					this.width = this.readUInt32();
+					this.height = this.readUInt32();
+					this.bits = this.data[this.pos++];
+					this.colorType = this.data[this.pos++];
+					this.compressionMethod = this.data[this.pos++];
+					this.filterMethod = this.data[this.pos++];
+					this.interlaceMethod = this.data[this.pos++];
 					break;
 				case 'acTL':
-					this$1.animation = {
-						numFrames: this$1.readUInt32(),
-						numPlays: this$1.readUInt32() || Infinity,
+					this.animation = {
+						numFrames: this.readUInt32(),
+						numPlays: this.readUInt32() || Infinity,
 						frames: [ ]
 					};
 					break;
 				case 'PLTE':
-					this$1.palette = this$1.read( chunkSize );
+					this.palette = this.read( chunkSize );
 					break;
 				case 'fcTL':
 					if ( frame ) {
-						this$1.animation.frames.push( frame );
+						this.animation.frames.push( frame );
 					}
-					this$1.pos += 4;
+					this.pos += 4;
 					frame = {
-						width: this$1.readUInt32(),
-						height: this$1.readUInt32(),
-						xOffset: this$1.readUInt32(),
-						yOffset: this$1.readUInt32()
+						width: this.readUInt32(),
+						height: this.readUInt32(),
+						xOffset: this.readUInt32(),
+						yOffset: this.readUInt32()
 					};
-					var delayNum = this$1.readUInt16();
-					var delayDen = this$1.readUInt16() || 100;
+					var delayNum = this.readUInt16();
+					var delayDen = this.readUInt16() || 100;
 					frame.delay = 1000 * delayNum / delayDen;
-					frame.disposeOp = this$1.data[this$1.pos++];
-					frame.blendOp = this$1.data[this$1.pos++];
+					frame.disposeOp = this.data[this.pos++];
+					frame.blendOp = this.data[this.pos++];
 					frame.data = [ ];
 					break;
 				case 'IDAT':
 				case 'fdAT':
 					if ( section === 'fdAT' ) {
-						this$1.pos += 4;
+						this.pos += 4;
 						chunkSize -= 4;
 					}
-					data = ( frame != null ? frame.data : void 0 ) || this$1.imgData;
-					var i = (void 0), _i = (void 0);
-					for ( i = _i = 0; 0 <= chunkSize ? _i < chunkSize : _i > chunkSize; i = 0 <= chunkSize ? ++_i : --_i ) {
-						data.push( this$1.data[this$1.pos++] );
+					data = ( frame != null ? frame.data : void 0 ) || this.imgData;
+					var _i = (void 0);
+					for ( _i = 0; 0 <= chunkSize ? _i < chunkSize : _i > chunkSize; 0 <= chunkSize ? ++_i : --_i ) {
+						data.push( this.data[this.pos++] );
 					}
 					break;
 				case 'tRNS':
-					this$1.transparency = { };
-					switch ( this$1.colorType ) {
+					this.transparency = { };
+					switch ( this.colorType ) {
 						case 3:
-							this$1.transparency.indexed = this$1.read( chunkSize );
-							var short = 255 - this$1.transparency.indexed.length;
+							this.transparency.indexed = this.read( chunkSize );
+							var short = 255 - this.transparency.indexed.length;
 							if ( short > 0 ) {
-								var i$1 = (void 0), _j = (void 0);
-								for ( i$1 = _j = 0; 0 <= short ? _j < short : _j > short; i$1 = 0 <= short ? ++_j : --_j ) {
-									this$1.transparency.indexed.push( 255 );
+								var _j = (void 0);
+								for ( _j = 0; 0 <= short ? _j < short : _j > short; 0 <= short ? ++_j : --_j ) {
+									this.transparency.indexed.push( 255 );
 								}
 							}
 							break;
 						case 0:
-							this$1.transparency.grayscale = this$1.read( chunkSize )[0];
+							this.transparency.grayscale = this.read( chunkSize )[0];
 							break;
 						case 2:
-							this$1.transparency.rgb = this$1.read( chunkSize );
+							this.transparency.rgb = this.read( chunkSize );
 					}
 					break;
 				case 'tEXt':
-					var text = this$1.read( chunkSize );
+					var text = this.read( chunkSize );
 					var index = text.indexOf( 0 );
 					var key = String.fromCharCode.apply( String, text.slice( 0, index ) );
-					this$1.text[key] = String.fromCharCode.apply( String, text.slice( index + 1 ) );
+					this.text[key] = String.fromCharCode.apply( String, text.slice( index + 1 ) );
 					break;
 				case 'IEND':
 					if ( frame ) {
-						this$1.animation.frames.push( frame );
+						this.animation.frames.push( frame );
 					}
-					this$1.colors = ( function() {
+					this.colors = ( function() {
 						switch ( this.colorType ) {
 							case 0:
 							case 3:
@@ -566,36 +562,35 @@ DEALINGS IN THE SOFTWARE. */
 							case 6:
 								return 3;
 						}
-					} ).call( this$1 );
-					this$1.hasAlphaChannel = this$1.colorType === 4 || this$1.colorType === 6;
-					var colors = this$1.colors + ( this$1.hasAlphaChannel ? 1 : 0 );
-					this$1.pixelBitlength = this$1.bits * colors;
-					this$1.colorSpace = ( function () {
+					} ).call( this );
+					this.hasAlphaChannel = this.colorType === 4 || this.colorType === 6;
+					var colors = this.colors + ( this.hasAlphaChannel ? 1 : 0 );
+					this.pixelBitlength = this.bits * colors;
+					this.colorSpace = ( function () {
 						switch ( this.colors ) {
 							case 1:
 								return 'DeviceGray';
 							case 3:
 								return 'DeviceRGB';
 						}
-					} ).call( this$1 );
-					this$1.imgData = new Uint8Array( this$1.imgData );
+					} ).call( this );
+					this.imgData = new Uint8Array( this.imgData );
 					return;
 				default:
-					this$1.pos += chunkSize;
+					this.pos += chunkSize;
 			}
-			this$1.pos += 4;
-			if ( this$1.pos > this$1.data.length ) {
+			this.pos += 4;
+			if ( this.pos > this.data.length ) {
 				error( 'Incomplete or corrupt PNG file' );
 			}
 		}
 		return;
 	};
 	PNG.prototype.read = function read ( bytes ) {
-			var this$1 = this;
-		var i, _i;
+		var _i;
 		var _results = [ ];
-		for ( i = _i = 0; 0 <= bytes ? _i < bytes : _i > bytes; i = 0 <= bytes ? ++_i : --_i ) {
-			_results.push( this$1.data[this$1.pos++] );
+		for ( _i = 0; 0 <= bytes ? _i < bytes : _i > bytes; 0 <= bytes ? ++_i : --_i ) {
+			_results.push( this.data[this.pos++] );
 		}
 		return _results;
 	};
@@ -706,7 +701,7 @@ DEALINGS IN THE SOFTWARE. */
 		var palette = this.palette;
 		var transparency = this.transparency.indexed || [ ];
 		var result = new Uint8Array( ( transparency.length || 0 ) + palette.length );
-		var length = palette.length;
+		palette.length;
 		var pos = 0;
 		var c = 0;
 		var i, _i, _ref, _ref1;
@@ -719,13 +714,12 @@ DEALINGS IN THE SOFTWARE. */
 		return result;
 	};
 	PNG.prototype.decodeFrames = function decodeFrames () {
-			var this$1 = this;
 		if ( this.animation) {
 			var frameCount = this.animation.frames.length;
 			var decodedFrames = [ ];
 			for ( var i = 0; i < frameCount; ++i ) {
-				var frame = this$1.animation.frames[i];
-				decodedFrames[i] = this$1.decodePixels( new Uint8Array( frame.data ) );
+				var frame = this.animation.frames[i];
+				decodedFrames[i] = this.decodePixels( new Uint8Array( frame.data ) );
 			}
 			return decodedFrames;
 		}

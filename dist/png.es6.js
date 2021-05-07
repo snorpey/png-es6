@@ -458,9 +458,9 @@ class PNG {
 		while ( true ) {
 			let chunkSize = this.readUInt32();
 			const section = ( ( function () {
-				let i, _i;
+				let _i;
 				const _results = [ ];
-				for ( i = _i = 0; _i < 4; i = ++_i ) {
+				for ( _i = 0; _i < 4; ++_i ) {
 					_results.push( String.fromCharCode( this.data[this.pos++] ) );
 				}
 				return _results;
@@ -510,8 +510,8 @@ class PNG {
 						chunkSize -= 4;
 					}
 					data = ( frame != null ? frame.data : void 0 ) || this.imgData;
-					let i, _i;
-					for ( i = _i = 0; 0 <= chunkSize ? _i < chunkSize : _i > chunkSize; i = 0 <= chunkSize ? ++_i : --_i ) {
+					let _i;
+					for ( _i = 0; 0 <= chunkSize ? _i < chunkSize : _i > chunkSize; 0 <= chunkSize ? ++_i : --_i ) {
 						data.push( this.data[this.pos++] );
 					}
 					break;
@@ -522,8 +522,8 @@ class PNG {
 							this.transparency.indexed = this.read( chunkSize );
 							const short = 255 - this.transparency.indexed.length;
 							if ( short > 0 ) {
-								let i, _j;
-								for ( i = _j = 0; 0 <= short ? _j < short : _j > short; i = 0 <= short ? ++_j : --_j ) {
+								let _j;
+								for ( _j = 0; 0 <= short ? _j < short : _j > short; 0 <= short ? ++_j : --_j ) {
 									this.transparency.indexed.push( 255 );
 								}
 							}
@@ -580,9 +580,9 @@ class PNG {
 		return;
 	}
 	read ( bytes ) {
-		let i, _i;
+		let _i;
 		const _results = [ ];
-		for ( i = _i = 0; 0 <= bytes ? _i < bytes : _i > bytes; i = 0 <= bytes ? ++_i : --_i ) {
+		for ( _i = 0; 0 <= bytes ? _i < bytes : _i > bytes; 0 <= bytes ? ++_i : --_i ) {
 			_results.push( this.data[this.pos++] );
 		}
 		return _results;
@@ -694,7 +694,7 @@ class PNG {
 		const palette = this.palette;
 		const transparency = this.transparency.indexed || [ ];
 		const result = new Uint8Array( ( transparency.length || 0 ) + palette.length );
-		const length = palette.length;
+		palette.length;
 		let pos = 0;
 		let c = 0;
 		let i, _i, _ref, _ref1;
